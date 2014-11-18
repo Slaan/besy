@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <pthread.h>
+#include <producer.h>
 
 #define MAX   16
 #define TRUE  1
@@ -28,41 +29,7 @@ rb *p_rb = &x;
 
 void* control(void* pid);
 void* consumer(void* pid);
-void* producer(void* pid);
-void* Procuder(void* pid);
 
-void* write_c(void* pid) {
-  int i = 0;
-  int z_var = 0;
-  printf("Schreiber: Starte das Schreiben (PID: %d)\n", *(int*) pid);
-  while(TRUE) {
-    i++;
-    z_var++;
-    if(z_var > 9) {
-       z_var = 0;
-    }
-    pthread_mutex_lock(&rb_mutex);
-    while(p_rb->p_in == p_rb->p_out && p_rb->count == MAX) {
-      printf("Schreiber: Buffer ist voll. Bin ratzen.\n");
-      pthread_cond_wait(&is_not_full, &rb_mutex);
-      printf("Schreiber: Bin aufgewacht. (Count: %d, PID: %d)\n", p_rb->count, 
-                                                                  *(int*) pid);
-    }
-    *(p_rb->p_in) = z_var;
-    (p_rb->p_in)++;
-    if((p_rb->p_in) > p_end) {
-      p_rb->p_in = p_start;
-    }
-    (p_rb->count)++;
-    if(p_rb->count != 0) {
-      printf("Schreiber: Buffer nicht mehr voll.\n");
-      pthread_cond_signal(&is_not_empty);
-    }
-    pthread_mutex_unlock(&rb_mutex);
-    sleep(1);
-  }
-  return (NULL);
-}
 
 void* read_rb(void* pid) {
   int i = 0;
@@ -99,8 +66,9 @@ int main(int argc, char** argv) {
   p_rb->count = 0;
   printf("Main: Counter Wert %d\n", p_rb->count);
   pthread_create(&threads[0], NULL, (void*) read_rb , (void *) &thread_id[0]);
-  pthread_create(&threads[1], NULL, (void*) write_c , (void *) &thread_id[1]);
-  // join all threads
+  pthread_create(&threads[1], NULL, (void*) producer1 , (void *) &thread_id[1]);
+  pthread_create(&threads[2], NULL, (void*) producer2 , (void *) &thread_id[2]);
+ // join all threads
   for(i = 0; i < 2; i++) 
     pthread_join(threads[i], NULL);
   printf("Main: Alle threads sind tot.\n");
