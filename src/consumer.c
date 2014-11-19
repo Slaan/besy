@@ -1,9 +1,11 @@
 #include "consumer.h"
+#include "main.h"
+
 
 void* read_rb(void* pid) {
   int i = 0;
   printf("Leser: Starte das Lesen (PID: %d)\n", *(int*) pid);
-  while(TRUE) {
+  while(true) {
     i++;
     pthread_mutex_lock(&rb_mutex);
     while(p_rb->count == 0) {

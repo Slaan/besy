@@ -14,9 +14,10 @@ int main(int argc, char** argv) {
   p_rb->p_out = p_start;
   p_rb->count = 0;
   printf("Main: Counter Wert %d\n", p_rb->count);
-  pthread_create(&threads[0], NULL, (void*) read_rb , (void *) &thread_id[0]);
+  pthread_create(&threads[0], NULL, (void*) consumer , (void *) &thread_id[0]);
   pthread_create(&threads[1], NULL, (void*) producer1 , (void *) &thread_id[1]);
   pthread_create(&threads[2], NULL, (void*) producer2 , (void *) &thread_id[2]);
+  pthread_create(&threads[3], NULL, (void*) controller, (void *) &thread_id[3]);
  // join all threads
   for(i = 0; i < 2; i++) 
     pthread_join(threads[i], NULL);
