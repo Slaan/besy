@@ -8,27 +8,29 @@
 #include <stdbool.h>
 
 #define MAX_BUFFER_SIZE   16
+#define p_start (int *) (p_rb -> buffer)
+#define p_end (int *) ((p_rb -> buffer) + MAX_BUFFER_SIZE-1)
 
 // mutex init
-pthread_mutex_t rb_mutex = PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t prod1_mutex = PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t prod2_mutex = PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t consumer_mutex = PTHREAD_MUTEX_INITIALIZER;
+extern pthread_mutex_t rb_mutex;
+extern pthread_mutex_t prod1_mutex;
+extern pthread_mutex_t prod2_mutex;
+extern pthread_mutex_t consumer_mutex;
 
 // condition variables
-pthread_cond_t is_not_full  = PTHREAD_COND_INITIALIZER; 
-pthread_cond_t is_not_empty = PTHREAD_COND_INITIALIZER;
-pthread_cond_t cond_prod1 = PTHREAD_COND_INITIALIZER;
-pthread_cond_t cond_prod2 = PTHREAD_COND_INITIALIZER;
-pthread_cond_t cond_consumer = PTHREAD_COND_INITIALIZER;
+extern pthread_cond_t is_not_full;
+extern pthread_cond_t is_not_empty;
+extern pthread_cond_t cond_prod1;
+extern pthread_cond_t cond_prod2;
+extern pthread_cond_t cond_consumer;
 
-//thread running bools
-bool is_running_prod1 = false;
-bool is_running_prod2 = false;
-bool is_running_consumer = false;
+// thread running bools
+extern bool is_running_prod1;
+extern bool is_running_prod2;
+extern bool is_running_consumer;
 
-int thread_id[4] = {0, 1, 2, 3}; 
-
+// thread ids
+extern int thread_id[4]; 
 
 typedef struct {
   int  buffer[MAX_BUFFER_SIZE];
@@ -37,10 +39,8 @@ typedef struct {
   int  count;
 } rb; 
 
-rb x = {{0}, NULL, NULL, 0}; 
-rb *p_rb = &x; 
-
-#define p_start (int *) (p_rb -> buffer)
-#define p_end (int *) ((p_rb -> buffer) + MAX_BUFFER_SIZE-1)
+// ringbuffer instance and his pointer
+extern rb  x; 
+extern rb* p_rb; 
 
 #endif // MAIN_H

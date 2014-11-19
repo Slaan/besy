@@ -7,10 +7,33 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <pthread.h>
-#include <producer.h>
+
+  // mutex init
+  pthread_mutex_t rb_mutex       = PTHREAD_MUTEX_INITIALIZER;
+  pthread_mutex_t prod1_mutex    = PTHREAD_MUTEX_INITIALIZER;
+  pthread_mutex_t prod2_mutex    = PTHREAD_MUTEX_INITIALIZER;
+  pthread_mutex_t consumer_mutex = PTHREAD_MUTEX_INITIALIZER;
+
+  // condition variables
+  pthread_cond_t is_not_full   = PTHREAD_COND_INITIALIZER; 
+  pthread_cond_t is_not_empty  = PTHREAD_COND_INITIALIZER;
+  pthread_cond_t cond_prod1    = PTHREAD_COND_INITIALIZER;
+  pthread_cond_t cond_prod2    = PTHREAD_COND_INITIALIZER;
+  pthread_cond_t cond_consumer = PTHREAD_COND_INITIALIZER;
+
+  bool is_running_prod1 = false;
+  bool is_running_prod2 = false;
+  bool is_running_consumer = false;
+
+  rb  x     = {{0}, NULL, NULL, 0};
+  rb* p_rb  = &x;
+
+  int thread_id[4] = {0, 1, 2, 3};
 
 int main(int argc, char** argv) {
   int i;
+  for(i = 0; i < 4; i++)
+    thread_id[i] = i;
   pthread_t threads[4];
   printf("Main: Starte Programm\n");
   p_rb->p_in  = p_start;

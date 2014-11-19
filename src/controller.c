@@ -2,13 +2,10 @@
 #include <unistd.h>
 #include <termios.h>
 
-// to run local main
-//#include "../include/controller.h"
-//#include "../include/main.h"
 #include "controller.h"
 #include "main.h"
 
-// copied from 
+// copied
 int mygetch() {
   struct termios oldt, newt;
   int ch;
@@ -21,19 +18,19 @@ int mygetch() {
   return ch; 
 }
 
-inline void toggleProducer1() {
+void toggleProducer1() {
   pthread_mutex_lock(&prod1_mutex);
   is_running_prod1 = !is_running_prod1;
   pthread_mutex_unlock(&prod1_mutex);
 }
 
-inline void toggleProducer2() {
+void toggleProducer2() {
   pthread_mutex_lock(&prod2_mutex);
   is_running_prod2 = !is_running_prod2;
   pthread_mutex_unlock(&prod2_mutex);
 }
 
-inline void toggleConsumer() {
+void toggleConsumer() {
   pthread_mutex_lock(&consumer_mutex);
   is_running_consumer = !is_running_consumer;
   pthread_mutex_unlock(&consumer_mutex);
@@ -58,11 +55,11 @@ void* controller(void* pid) {
       case 'q': //killOthers();
                 done = true;
                 break;
-      case '1': toggleProducer1();
+      case '1': toggleProducer1(&prod1_mutex);
                 break;
-      case '2': toggleProducer2();
+      case '2': toggleProducer2(&prod2_mutex);
                 break;
-      case 'c': toggleConsumer();
+      case 'c': toggleConsumer(&consumer_mutex);
                 break;
       case 'h': printHelp();
                 break;
@@ -72,12 +69,3 @@ void* controller(void* pid) {
   }
   return (NULL);
 }
-
-/*
-int main() {
-  pthread_t thread;
-  int id = 1;
-  pthread_create(&thread, NULL, (void*) controller, (void*) &id);
-  pthread_join(thread, NULL);
-}
-*/
