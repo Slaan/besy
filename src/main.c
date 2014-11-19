@@ -1,4 +1,7 @@
 #include "main.h"
+#include "consumer.h"
+#include "producer.h"
+#include "controller.h"
 
 #include <stdio.h>
 #include <stdlib.h>
