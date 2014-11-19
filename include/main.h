@@ -29,6 +29,11 @@ extern bool is_running_prod1;
 extern bool is_running_prod2;
 extern bool is_running_consumer;
 
+// thread alive bools
+extern bool is_alive_prod1;
+extern bool is_alive_prod2;
+extern bool is_alive_consumer;
+
 // thread ids
 extern int thread_id[4]; 
 

@@ -20,18 +20,27 @@ int mygetch() {
 
 void toggleProducer1() {
   pthread_mutex_lock(&prod1_mutex);
+  if (!is_running_prod1) {
+    pthread_cond_signal(&cond_prod1);
+  }
   is_running_prod1 = !is_running_prod1;
   pthread_mutex_unlock(&prod1_mutex);
 }
 
 void toggleProducer2() {
   pthread_mutex_lock(&prod2_mutex);
+  if (!is_running_prod2) {
+    pthread_cond_signal(&cond_prod2);
+  } 
   is_running_prod2 = !is_running_prod2;
   pthread_mutex_unlock(&prod2_mutex);
 }
 
 void toggleConsumer() {
   pthread_mutex_lock(&consumer_mutex);
+  if (!is_running_consumer) {
+    pthread_cond_signal(&cond_consumer);
+  }
   is_running_consumer = !is_running_consumer;
   pthread_mutex_unlock(&consumer_mutex);
 }
@@ -44,15 +53,20 @@ void printHelp() {
   printf("Hilfe anzeigen: h\n");
 }
 
+void killOthers() {
+  is_alive_prod1 = false;
+  is_alive_prod2 = false;
+  is_alive_consumer = false;
+
+}
+
 void* controller(void* pid) {
-  int  i    = 0;
   bool done = false;
   printf("Controller: Starte das Kontrollieren\n");
   while(!done) {
-    i++;
     switch(mygetch()) {
       case 'Q': // nop
-      case 'q': //killOthers();
+      case 'q': killOthers();
                 done = true;
                 break;
       case '1': toggleProducer1(&prod1_mutex);
@@ -67,5 +81,6 @@ void* controller(void* pid) {
                 break;
     }
   }
+  printf("Controller beendet\n");
   return (NULL);
 }

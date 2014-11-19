@@ -4,7 +4,7 @@
 
 void* consumer(void* pid) {
   printf("Consumer: Starte die Ausgabe (PID: %d)\n", *(int*) pid);
-  while(true) {
+  while(is_alive_consumer) {
     // check block through controller
     pthread_mutex_lock(&consumer_mutex);
     while(!is_running_consumer) {
@@ -19,6 +19,7 @@ void* consumer(void* pid) {
       printf("Consumer: Bin aufgewacht. (Count: %d, PID: %d)\n", p_rb->count,
                                                                  *(int*) pid);
     }
+    printf("Output: %c\n",*(p_rb->p_out));
     (p_rb->count)--;
     (p_rb->p_out)++;
     if((p_rb->p_out) > p_end) {
@@ -29,8 +30,9 @@ void* consumer(void* pid) {
       pthread_cond_signal(&is_not_full);
     }
     pthread_mutex_unlock(&rb_mutex);
-    sleep(1);
+    sleep(2);
   }
+  printf("Consumer beendet\n");
   return (NULL);
 }
 

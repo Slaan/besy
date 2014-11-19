@@ -25,6 +25,10 @@
   bool is_running_prod2 = false;
   bool is_running_consumer = false;
 
+  bool is_alive_prod1 = true;
+  bool is_alive_prod2 = true;
+  bool is_alive_consumer = true;
+
   rb  x     = {{0}, NULL, NULL, 0};
   rb* p_rb  = &x;
 
@@ -45,7 +49,7 @@ int main(int argc, char** argv) {
   pthread_create(&threads[2], NULL, (void*) producer2 , (void *) &thread_id[2]);
   pthread_create(&threads[3], NULL, (void*) controller, (void *) &thread_id[3]);
  // join all threads
-  for(i = 0; i < 2; i++) 
+  for(i = 0; i < 4; i++) 
     pthread_join(threads[i], NULL);
   printf("Main: Alle threads sind tot.\n");
   return 0;
