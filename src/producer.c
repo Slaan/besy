@@ -1,6 +1,7 @@
-#include "stdio.h"
-#include "producer.h"
+#include <stdio.h>
 
+#include "producer.h"
+#include "main.h"
 
 
 // Thread 1: Produces small letters and writes in ringbuffer
@@ -20,7 +21,7 @@ void* producer1(void* pid) {
 				pthread_cond_wait(&is_not_full, &rb_mutex);
 				printf("Schreiber: Bin aufgewacht. (Count: %d, PID: %d)\n", p_rb->count, *(int*) pid);
 			}
-		*(p_rb->p_in) = getmychar(z_var);
+		*(p_rb->p_in) = (char) z_var;
 		(p_rb->p_in)++;
 		if((p_rb->p_in) > p_end) {
 			p_rb->p_in = p_start;
@@ -37,7 +38,7 @@ void* producer1(void* pid) {
 	}
 
 // Thread 1: Produces small letters and writes in ringbuffer
-void* producer1(void* pid) {
+void* producer2(void* pid) {
 	int i = 0;
 	int z_var = 0x40;
 		printf("Schreiber: Starte das Schreiben (PID: %d)\n", *(int*) pid);
@@ -53,7 +54,7 @@ void* producer1(void* pid) {
 				pthread_cond_wait(&is_not_full, &rb_mutex);
 				printf("Schreiber: Bin aufgewacht. (Count: %d, PID: %d)\n", p_rb->count, *(int*) pid);
 			}
-		*(p_rb->p_in) = z_var;
+		*(p_rb->p_in) = (char) z_var;
 		(p_rb->p_in)++;
 		if((p_rb->p_in) > p_end) {
 			p_rb->p_in = p_start;
