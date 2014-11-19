@@ -55,7 +55,7 @@ void* controller(void* pid) {
     i++;
     switch(mygetch()) {
       case 'Q': // nop
-      case 'q': killOthers();
+      case 'q': //killOthers();
                 done = true;
                 break;
       case '1': toggleProducer1();
