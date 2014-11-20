@@ -1,0 +1,26 @@
+\subsection{Mutexe}
+\begin{table}[h]
+  \begin{tabular}{c | c | c | c | c}
+          & rb\_mutex & prod1\_mutex & prod2\_mutex & consumer\_mutex \\
+    \hline
+    producer 1 &  x   &  x           &              &                 \\
+    producer 2 &  x   &              &     x        &                 \\
+    consumer   &  x   &              &              &    x            \\
+    controller &      &  x           &     x        &    x            \\
+  \end{tabular}
+  \caption{Die Threads mit ihren jeweiligen Mutexen}
+\end{table}
+
+\subsection{Condition Variables}
+\begin{table}[h]
+  \begin{tabular}{c | c | c | c | c | c}
+          & is\_not\_full & is\_not\_empty & cond\_prod1 & cond\_prod2 & cond\_consumer \\
+    \hline
+    rb\_mutex      &  x  &  x  &     &     &     \\    
+    prod1\_mutex   &     &     &  x  &     &     \\
+    prod2\_mutex   &     &     &     &  x  &     \\
+    cond\_consumer &     &     &     &     &  x  \\
+  \end{tabular}
+  \caption{Die Mutexe mit ihren jeweiligen Conditionvariablen}
+\end{table}
+

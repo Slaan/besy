@@ -29,6 +29,7 @@ $(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.c
 .PHONEY: clean
 clean: 
 	@$(rm) $(OBJECTS)
+	@$(rm) $(BINDIR)/$(TARGET)
 
 .PHONEY: remove
 remove: clean
