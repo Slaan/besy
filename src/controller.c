@@ -5,6 +5,8 @@
 #include "controller.h"
 #include "main.h"
 
+
+
 // copied
 int mygetch() {
   struct termios oldt, newt;
@@ -54,10 +56,11 @@ void printHelp() {
 }
 
 void killOthers() {
-  is_alive_prod1 = false;
-  is_alive_prod2 = false;
-  is_alive_consumer = false;
-
+  pthread_cancel(threads[0]);
+  pthread_cancel(threads[1]);
+  pthread_cancel(threads[2]);
+  pthread_cond_broadcast(&is_not_full);
+  pthread_cond_broadcast(&is_not_empty);
 }
 
 void* controller(void* pid) {

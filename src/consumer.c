@@ -4,7 +4,7 @@
 
 void* consumer(void* pid) {
   printf("Consumer: Starte die Ausgabe (PID: %d)\n", *(int*) pid);
-  while(is_alive_consumer) {
+  while(true) {
     // check block through controller
     pthread_mutex_lock(&consumer_mutex);
     while(!is_running_consumer) {

@@ -25,20 +25,17 @@
   bool is_running_prod2 = false;
   bool is_running_consumer = false;
 
-  bool is_alive_prod1 = true;
-  bool is_alive_prod2 = true;
-  bool is_alive_consumer = true;
-
   rb  x     = {{0}, NULL, NULL, 0};
   rb* p_rb  = &x;
 
   int thread_id[4] = {0, 1, 2, 3};
+  
+  pthread_t threads[4];
 
 int main(int argc, char** argv) {
   int i;
   for(i = 0; i < 4; i++)
     thread_id[i] = i;
-  pthread_t threads[4];
   printf("Main: Starte Programm\n");
   p_rb->p_in  = p_start;
   p_rb->p_out = p_start;
@@ -54,4 +51,3 @@ int main(int argc, char** argv) {
   printf("Main: Alle threads sind tot.\n");
   return 0;
 }
-

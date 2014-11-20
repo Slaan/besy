@@ -9,7 +9,7 @@ void* producer1(void* pid) {
 	int z_var = 0x60;
   int PID = *(int*) pid;
 		printf("Producer: Starte das Schreiben (PID: %d)\n", PID);
-		while(is_alive_prod1) {
+		while(true) {
 		 	while(!is_running_prod1) {
         pthread_mutex_lock(&prod1_mutex);
 				pthread_cond_wait(&cond_prod1, &prod1_mutex);
@@ -49,7 +49,7 @@ void* producer2(void* pid) {
 	int z_var = 0x40;
   int PID = *(int*) pid;
 		printf("Producer2: Starte das Schreiben (PID: %d)\n", PID);
-		while(is_alive_prod2) {
+		while(true) {
 		 	while(!is_running_prod2) {
         pthread_mutex_lock(&prod2_mutex);
 				pthread_cond_wait(&cond_prod2, &prod2_mutex);
