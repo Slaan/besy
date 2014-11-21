@@ -59,8 +59,8 @@ void killOthers() {
   pthread_cancel(threads[0]);
   pthread_cancel(threads[1]);
   pthread_cancel(threads[2]);
-  pthread_cond_broadcast(&is_not_full);
   pthread_cond_broadcast(&is_not_empty);
+  pthread_cond_broadcast(&is_not_full);
 }
 
 void* controller(void* pid) {
@@ -85,5 +85,6 @@ void* controller(void* pid) {
     }
   }
   printf("Controller beendet\n");
+  pthread_exit(NULL);
   return (NULL);
 }

@@ -7,7 +7,7 @@
 #include <pthread.h>
 #include <stdbool.h>
 
-#define MAX_BUFFER_SIZE   16
+#define MAX_BUFFER_SIZE   6
 #define p_start (int *) (p_rb -> buffer)
 #define p_end (int *) ((p_rb -> buffer) + MAX_BUFFER_SIZE-1)
 

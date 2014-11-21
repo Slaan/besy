@@ -1,6 +1,7 @@
 #include "main.h"
 #include "consumer.h"
-#include "producer.h"
+#include "producer1.h"
+#include "producer2.h"
 #include "controller.h"
 
 #include <stdio.h>
@@ -46,8 +47,10 @@ int main(int argc, char** argv) {
   pthread_create(&threads[2], NULL, (void*) producer2 , (void *) &thread_id[2]);
   pthread_create(&threads[3], NULL, (void*) controller, (void *) &thread_id[3]);
  // join all threads
-  for(i = 0; i < 4; i++) 
+  for(i = 0; i < 4; i++) {
     pthread_join(threads[i], NULL);
+    printf("exit %d\n", i);
+  }
   printf("Main: Alle threads sind tot.\n");
   return 0;
 }

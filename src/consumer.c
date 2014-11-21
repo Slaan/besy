@@ -9,6 +9,9 @@ void* consumer(void* pid) {
     pthread_mutex_lock(&consumer_mutex);
     while(!is_running_consumer) {
       pthread_cond_wait(&cond_consumer, &consumer_mutex);
+      pthread_mutex_unlock(&consumer_mutex);
+      pthread_testcancel();
+      pthread_mutex_lock(&consumer_mutex);
     }
     pthread_mutex_unlock(&consumer_mutex);
     // check buffer not empty
@@ -17,7 +20,10 @@ void* consumer(void* pid) {
       printf("Consumer: Buffer ist leer\n");
       pthread_cond_wait(&is_not_empty, &rb_mutex);
       printf("Consumer: Bin aufgewacht. (Count: %d, PID: %d)\n", p_rb->count,
-                                                                 *(int*) pid);
+                                                                     *(int*) pid);
+      pthread_mutex_unlock(&rb_mutex);
+      pthread_testcancel();
+      pthread_mutex_lock(&rb_mutex);
     }
     printf("Output: %c\n",*(p_rb->p_out));
     (p_rb->count)--;
@@ -26,7 +32,7 @@ void* consumer(void* pid) {
       p_rb->p_out = p_start;
     }
     if(p_rb->count <= MAX_BUFFER_SIZE) {
-      printf("Consumer: Buffer nicht voll.\n");
+      printf("Consumer: Buffer mehr nicht voll.\n");
       pthread_cond_signal(&is_not_full);
     }
     pthread_mutex_unlock(&rb_mutex);
