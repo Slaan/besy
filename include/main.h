@@ -29,6 +29,8 @@ extern bool is_running_prod1;
 extern bool is_running_prod2;
 extern bool is_running_consumer;
 
+extern bool kill;
+
 // thread ids
 extern int thread_id[4]; 
 

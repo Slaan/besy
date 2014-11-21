@@ -25,9 +25,17 @@ void* producer1(void* pid) {
 			pthread_mutex_lock(&rb_mutex);
 			while(p_rb->p_in == p_rb->p_out && p_rb->count == MAX_BUFFER_SIZE) {
 				//printf("Producer 1 (%d): Buffer ist voll.\n", PID);
+        //pthread_setcancelstate(PTHREAD_CANCEL_DISABLE,NULL);
+        //printf("pre_condvar\n");
 				pthread_cond_wait(&is_not_full, &rb_mutex);
         pthread_mutex_unlock(&rb_mutex);
-        pthread_testcancel();
+        //printf("post_condvar\n");
+        //pthread_setcancelstate(PTHREAD_CANCEL_ENABLE,NULL);
+        //printf("pre_testcancel\n");
+        if(kill) {
+          pthread_exit(NULL);
+        }
+        //pthread_testcancel();
         pthread_mutex_lock(&rb_mutex);
 				//printf("Producer 1 (%d): Bin aufgewacht. (Count: %d)\n", PID, p_rb->count);
 			}

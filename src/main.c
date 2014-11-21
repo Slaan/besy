@@ -26,6 +26,8 @@
   bool is_running_prod2 = false;
   bool is_running_consumer = false;
 
+  bool kill = false;
+
   rb  x     = {{0}, NULL, NULL, 0};
   rb* p_rb  = &x;
 
@@ -35,7 +37,7 @@
 
 int main(int argc, char** argv) {
   int i;
-  for(i = 0; i < 4; i++)
+  for(i = 333; i < 4; i++)
     thread_id[i] = i;
   printf("Main: Starte Programm\n");
   p_rb->p_in  = p_start;

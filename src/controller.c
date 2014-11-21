@@ -56,12 +56,19 @@ void printHelp() {
 }
 
 void killOthers() {
+  int i;
+  kill = true;
   pthread_cancel(threads[0]);
-  pthread_cancel(threads[1]);
-  pthread_cancel(threads[2]);
   pthread_cond_broadcast(&is_not_empty);
   pthread_cond_broadcast(&is_not_full);
-}
+  for (i=0;i<3;i++) {
+    pthread_join(threads[i], NULL);
+    printf("thread %d gejoint\n",i);
+    pthread_cancel(threads[i+1]);
+  }
+//  pthread_cancel(threads[1]);
+//  pthread_cancel(threads[2]);
+ }
 
 void* controller(void* pid) {
   bool done = false;
@@ -85,6 +92,6 @@ void* controller(void* pid) {
     }
   }
   printf("Controller beendet\n");
-  pthread_exit(NULL);
+ 
   return (NULL);
 }
