@@ -51,7 +51,6 @@ int main(int argc, char** argv) {
  // join all threads
   for(i = 0; i < 4; i++) {
     pthread_join(threads[i], NULL);
-    printf("exit %d\n", i);
   }
   printf("Main: Alle threads sind tot.\n");
   return 0;

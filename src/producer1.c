@@ -24,7 +24,7 @@ void* producer1(void* pid) {
 			}
 			pthread_mutex_lock(&rb_mutex);
 			while(p_rb->p_in == p_rb->p_out && p_rb->count == MAX_BUFFER_SIZE) {
-				//printf("Producer 1 (%d): Buffer ist voll.\n", PID);
+				printf("Producer 1 (%d): Buffer ist voll.\n", PID);
         //pthread_setcancelstate(PTHREAD_CANCEL_DISABLE,NULL);
         //printf("pre_condvar\n");
 				pthread_cond_wait(&is_not_full, &rb_mutex);
